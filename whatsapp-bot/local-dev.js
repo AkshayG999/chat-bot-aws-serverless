@@ -1,18 +1,12 @@
 const dotenv = require('dotenv');
 dotenv.config({ path: 'app/config/.env' });
-const db = require('./models');
-
+const mongoose = require('mongoose');
 const { app } = require('./index');
 
-//const agenda = require("./app/jobs");
-
 // Connect to MongoDB using Mongoose
-db.mongoose
-    .connect(process.env.MONGODB_URI, {
-        useCreateIndex: true,
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-        useFindAndModify: false,
+mongoose
+    .connect("mongodb://root:root@ac-loexyba-shard-00-00.1pmwlf7.mongodb.net:27017,ac-loexyba-shard-00-01.1pmwlf7.mongodb.net:27017,ac-loexyba-shard-00-02.1pmwlf7.mongodb.net:27017/boongg?replicaSet=atlas-pitt62-shard-0&ssl=true&authSource=admin", {
+
     })
     .then(() => {
         console.log('Successfully connected to MongoDB. running local-dev');
@@ -27,3 +21,6 @@ db.mongoose
         console.error('Error connecting to MongoDB:', err);
         process.exit(1);
     });
+
+const db = { mongoose };
+module.exports = db;
