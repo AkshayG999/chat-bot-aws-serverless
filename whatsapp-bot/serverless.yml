@@ -1,0 +1,34 @@
+service: whatsapp-bot
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  profile: boongg
+  region: ap-south-1
+  timeout: 30
+  environment:
+    MONGODB_URI: mongodb+srv://nirmitee_db_user:Y87p4C4DpDpE8AC9@nirmiteecluster.8t6pe.mongodb.net/boongg-whatsapp?retryWrites=true&w=majority
+    MONGO_USERNAME: 'nirmitee_db_user'
+    MONGO_PASSWORD: 'Y87p4C4DpDpE8AC9'
+    MONGO_HOST: 'nirmiteecluster.8t6pe.mongodb.net'
+    MONGO_DB: 'devs-learnings'
+    VERIFY_TOKEN: 'Boongg'
+    WHATSAPP_TOKEN: 'EAACt3u37k78BAJIVfjfnxQB02WNlgnr6Ax0QzphxynRPw7wbkr13PcCKPRemHONK0ZALXxPsZBPR4N9EX6H9IYktOltU7qoxi93cGO5VuPoGhcwZCMEgCwwCn1DiiqotJkr0oOVAonono0kHXZAHLwz7pwwZCbTqnByHvNC6BgpYZBt6XO0vnyeyznGt6ZCNuZBf2ibtsjdvhgZDZD'
+    WHATSAPP_PHONEID: '106637552239301'
+    AUTH_TOKEN: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjY0Mjk2Y2M3YmFjMDI2NGNiOGFmMmM0NCIsInVzZXJuYW1lIjoibmlybWl0ZWUiLCJtb2JpbGVOdW1iZXIiOiI5ODgxNDI4MDA4IiwiZW1haWwiOiJiYWxld2FkaUBib29uZ2cuY29tIiwicm9sZSI6IlNUT1JFX0FETUlOIiwic3RhdHVzIjp0cnVlLCJmcmFuY2hpc2VUeXBlIjoiU0lMVkVSX0ZSQU5DSElTRSIsIl9fdiI6MH0sImlhdCI6MTY4MDg3MDUyMH0.1bBaySRuGMREcsd-0U04MjNnEuQ_EahYnSBsOBguqco'
+    BOONGG_URL: 'https://api.boongg.com/api'
+    BOONGG_DEV_URL: 'http://dev-api.boongg.com:3100/api'
+functions:
+  api:
+    handler: lambda.handler
+    warmup: true
+    events:
+      - http: ANY /
+        cors: true
+      - http: "ANY {proxy+}"
+        cors: true
+      - https: ANY /
+        cors: true
+      - https: "ANY {proxy+}"
+        cors: true

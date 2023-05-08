@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const { messageTypes } = require('../messageTypes/messageTypeController')
+const logger = require("nirmitee-logger");
 
 
 router.get('/', (req, res) => {
@@ -19,18 +20,24 @@ router.get("/webhook", (req, res) => {
     let token = req.query["hub.verify_token"];
     let challenge = req.query["hub.challenge"];
 
+    logger.info({
+        verify_token,
+        mode,
+        token,
+        challenge
+    })
     // Check if a token and mode were sent
     if (mode && token) {
-
         if (mode === "subscribe" && token === verify_token) {
-
             console.log("WEBHOOK_VERIFIED");
-            res.status(200).send(challenge);
+            return res.status(200).send(challenge);
         } else {
-
-            res.sendStatus(403);
+            return res.sendStatus(403);
         }
+    } else {
+        res.status(200).json({})
     }
+
 });
 
 module.exports = router
